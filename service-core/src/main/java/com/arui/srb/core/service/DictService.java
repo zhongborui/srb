@@ -4,6 +4,7 @@ import com.arui.srb.core.pojo.entity.Dict;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * <p>
@@ -20,4 +21,17 @@ public interface DictService extends IService<Dict> {
      * @param inputStream 文件导入输入流
      */
     void importData(InputStream inputStream);
+
+    /**
+     * 导出数据字典
+     * @return
+     */
+    List listDictData();
+
+    /**
+     * 根据上级id查询所有数据
+     * @param parentId
+     * @return
+     */
+    List<Dict> listByParentId(Long parentId);
 }
