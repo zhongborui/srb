@@ -3,6 +3,8 @@ package com.arui.srb.core.service;
 import com.arui.srb.core.pojo.entity.Dict;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.io.InputStream;
+
 /**
  * <p>
  * 数据字典 服务类
@@ -13,4 +15,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface DictService extends IService<Dict> {
 
+    /**
+     * 导入数据字典excel数据
+     * @param inputStream 文件导入输入流
+     */
+    void importData(InputStream inputStream);
 }
