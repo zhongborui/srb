@@ -10,13 +10,20 @@ import com.arui.srb.core.mapper.DictMapper;
 import com.arui.srb.core.service.DictService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.plugin.extension.ExtensionUtils;
 
+import javax.annotation.Resource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -27,7 +34,11 @@ import java.util.List;
  * @since 2021-09-22
  */
 @Service
+@Slf4j
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
+
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * mybatis-plus中 baseMapper 多态实际执行还是DictMapper
@@ -58,14 +69,41 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         return dtoList;
     }
 
+    /**
+     * 展示数据字典列表
+     * @param parentId
+     * @return
+     */
     @Override
     public List<Dict> listByParentId(Long parentId) {
-        List<Dict> dictList = baseMapper.selectList(new QueryWrapper<Dict>().eq("parent_id", parentId));
+        List<Dict> dictList = null;
+
+        try {
+            dictList  = (List<Dict>) redisTemplate.opsForValue().get("srb:core:dictList:" + parentId);
+            if (dictList != null || dictList.size() >= 0){
+                log.info("从redis中取值");
+                return dictList;
+            }
+        } catch (Exception e) {
+            // 为不影响操作，继续执行后面代码从数据库获取数据
+            log.error("redis服务器异常" + ExceptionUtils.getStackTrace(e));
+        }
+
+        dictList = baseMapper.selectList(new QueryWrapper<Dict>().eq("parent_id", parentId));
         dictList.forEach(dict -> {
             //如果有子节点，则是非叶子节点
             boolean hasChildren = this.hasChildren(dict.getId());
             dict.setHasChildren(hasChildren);
         });
+
+        // 将数据存入到redis
+        try {
+            redisTemplate.opsForValue().set("srb:core:dictList:" + parentId, dictList, 5, TimeUnit.MINUTES);
+            log.info("数据存入redis");
+        } catch (Exception e) {
+            log.error("redis服务器异常：" + ExceptionUtils.getStackTrace(e));
+        }
+
         return dictList;
     }
 
