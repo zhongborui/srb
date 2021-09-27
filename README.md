@@ -57,3 +57,37 @@
 
   
 
+## 后台后端
+
+### 数据字典
+
+![](doc/images/后台数据字典功能.png)
+
+- 借助 [EasyExcel](https://github.com/alibaba/easyexcel) 完成数据字典的excel的导入功能
+
+  ```java
+  <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>easyexcel</artifactId>
+  </dependency>
+  <dependency>
+      <groupId>org.apache.xmlbeans</groupId>
+      <artifactId>xmlbeans</artifactId>
+  </dependency>
+  ```
+
+- UML类图
+
+  ![](doc/UML/数据字典导入功能.png)
+
+
+
+## 集成Redis
+
+- RedisTemplate 需要 ==序列化== 传输的数据
+- 用Redis缓存数据字典提高性能（数据字典常用数据，且数据变化性小）
+
+
+
+## 调用阿里云SMS（短信服务）
+
