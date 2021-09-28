@@ -1,0 +1,15 @@
+server:
+  port: 8130
+spring:
+  profiles:
+    active: dev
+  application:
+    name: service-oss
+
+aliyun:
+  oss:
+    endpoint: oss-cn-shenzhen.aliyuncs.com
+    accessKeyId: LTAI5tQgYUodcrbxPr4toR11
+    accessKeySecret: SIpj0CxmK6nr17I3WMPVq6lddZGWne
+    bucketName: arui01
+
