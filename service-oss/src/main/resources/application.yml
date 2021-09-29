@@ -8,8 +8,13 @@ spring:
 
 aliyun:
   oss:
-    endpoint: oss-cn-shenzhen.aliyuncs.com
-    accessKeyId: LTAI5tQgYUodcrbxPr4toR11
-    accessKeySecret: SIpj0CxmK6nr17I3WMPVq6lddZGWne
-    bucketName: arui01
+    endpoint: ENC(HM8cdg/5LcUL/VAOCFVFmnaUJ1xigz4RvhZpel7E+NnXM3B7O3gmBA==)
+    accessKeyId: ENC(fYjw0YSB5CV8dwCNcLDJxuE0hoKpfoNFJ4FypjKMqIgTpGrNzOeOeA==)
+    accessKeySecret: ENC(0L+RQ6E0elc0UHIX008ai4N0YNevVudOYdMbd4/aKkXhBp7XU7dPOw==)
+    bucketName: ENC(K5XO15BEh7CfX72zY2wQCQ==)
 
+
+jasypt:
+  encryptor:
+    algorithm: PBEWITHMD5ANDDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
