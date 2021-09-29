@@ -20,8 +20,14 @@ spring:
 
 aliyun:
   sms:
-    region-id: cn-shenzhen
-    key-id: id
-    key-secret: secret
-    template-code: template-code
-    sign-name: sign-name
+    regionId: ENC(gNEJ3EzUSrcjQn4b2wxevYR1pyJcJrsJ)
+    keyId: ENC(QLl7ELUWFgn41TvIM+1wE/i6NHS6dev57BXGjyr3+Tc3rxn1W2RjLg==)
+    keySecret: ENC(z5woNVUXG460YBvk9F7mel+bLEa/uxCcCndL0V0WnaqYpq3EBxZeww==)
+    templateCode: ENC(c81B9Rmz9LDYRohxqDLTxQtTuf1iBRt5)
+    signName: ENC(nZDWhnNZrT/SuQWhYKXTbvu6cChvnC3+)
+
+# 3.x.x高版本的写法，需要带上算法，否则springboot启动失败
+jasypt:
+  encryptor:
+    algorithm: PBEWITHMD5ANDDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
