@@ -48,7 +48,7 @@ public class Swagger2Config {
     public Docket apiApiConfig(){
         return new Docket(DocumentationType.SWAGGER_2)
                 // api文档分组名
-                .groupName("adminApi")
+                .groupName("api")
                 .apiInfo(apiApiInfo())
                 .select()
                 // 正则匹配请求路径admin开头的
@@ -62,8 +62,8 @@ public class Swagger2Config {
      */
     private ApiInfo apiApiInfo() {
         return new ApiInfoBuilder()
-                .title("尚融宝前台管理系统-API文档")
-                .description("本文档描述了尚融宝后台管理系统接口")
+                .title("尚融宝-API文档")
+                .description("本文档描述了尚融宝接口")
                 .version("1.0")
                 .contact(new Contact("arui", "https://arui.com", "arui@arui.com"))
                 .build();
