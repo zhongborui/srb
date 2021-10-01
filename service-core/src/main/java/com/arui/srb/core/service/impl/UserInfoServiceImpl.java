@@ -1,17 +1,20 @@
 package com.arui.srb.core.service.impl;
 
 import com.arui.common.exception.Assert;
-import com.arui.common.exception.BusinessException;
 import com.arui.common.result.ResponseEnum;
 import com.arui.common.util.MD5;
+import com.arui.srb.base.util.JwtUtils;
+import com.arui.srb.core.mapper.UserLoginRecordMapper;
 import com.arui.srb.core.pojo.entity.UserInfo;
 import com.arui.srb.core.mapper.UserInfoMapper;
+import com.arui.srb.core.pojo.entity.UserLoginRecord;
+import com.arui.srb.core.pojo.vo.LoginVO;
+import com.arui.srb.core.pojo.vo.RegisterVO;
 import com.arui.srb.core.pojo.vo.UserInfoVO;
 import com.arui.srb.core.service.UserInfoService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,17 +39,20 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     @Resource
     private UserInfoMapper userInfoMapper;
 
+    @Resource
+    private UserLoginRecordMapper userLoginRecordMapper;
+
     @Transactional(rollbackFor = {Exception.class})
     @Override
-    public void register(UserInfoVO userInfoVO) {
-        String mobile = userInfoVO.getMobile();
+    public void register(RegisterVO registerVO) {
+        String mobile = registerVO.getMobile();
         // 判断用户是否已经注册
         QueryWrapper<UserInfo> userInfoQueryWrapper = new QueryWrapper<>();
         userInfoQueryWrapper.eq("mobile", mobile);
         Integer selectCount = baseMapper.selectCount(userInfoQueryWrapper);
         Assert.isTrue(selectCount == 0, ResponseEnum.MOBILE_EXIST_ERROR);
 
-        String registerCode = userInfoVO.getRegisterCode();
+        String registerCode = registerVO.getCode();
         // 取出redis中验证码校验是否正确
         String codeCache = (String) redisTemplate.opsForValue().get("srb:sms:code:" + mobile);
 
@@ -54,13 +60,54 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         log.info("验证码校验成功，准备将注册信息写入数据库");
         try {
             UserInfo userInfo = new UserInfo();
-            userInfo.setUserType(userInfoVO.getUserType());
-            userInfo.setMobile(userInfoVO.getMobile());
-            userInfo.setPassword(MD5.encrypt(userInfoVO.getPassword()));
+            userInfo.setUserType(registerVO.getUserType());
+            userInfo.setMobile(registerVO.getMobile());
+            userInfo.setPassword(MD5.encrypt(registerVO.getPassword()));
             userInfo.setStatus(UserInfo.STATUS_NORMAL);
             userInfoMapper.insert(userInfo);
         } catch (Exception e) {
             throw new RuntimeException();
         }
+    }
+
+    @Override
+    public UserInfoVO login(LoginVO loginVO, String ip) {
+        Integer userType = loginVO.getUserType();
+        String mobile = loginVO.getMobile();
+        String password = loginVO.getPassword();
+
+        // 获取会员
+        QueryWrapper<UserInfo> userInfoQueryWrapper = new QueryWrapper<>();
+        userInfoQueryWrapper.eq("user_type", userType)
+                .eq("mobile", mobile);
+        UserInfo userInfo = baseMapper.selectOne(userInfoQueryWrapper);
+
+        // LOGIN_MOBILE_ERROR(208, "用户不存在"),
+        Assert.notNull(userInfo, ResponseEnum.LOGIN_MOBILE_ERROR);
+
+        // LOGIN_PASSWORD_ERROR(209, "密码错误"),
+        String dbPassword = userInfo.getPassword();
+        String loginPassword = MD5.encrypt(password);
+        Assert.isTrue(dbPassword.equals(loginPassword), ResponseEnum.LOGIN_PASSWORD_ERROR);
+
+        // 查看用户是否被禁用
+        Assert.equals(userInfo.getStatus(), UserInfo.STATUS_NORMAL, ResponseEnum.LOGIN_LOKED_ERROR);
+
+        // 将日志插入到日志表
+        UserLoginRecord userLoginRecord = new UserLoginRecord();
+        userLoginRecord.setIp(ip);
+        userLoginRecord.setUserId(userInfo.getId());
+        userLoginRecordMapper.insert(userLoginRecord);
+
+        // 生成token
+        String token = JwtUtils.createToken(userInfo.getId(), userInfo.getName());
+        UserInfoVO userInfoVO = new UserInfoVO();
+        userInfoVO.setToken(token);
+        userInfoVO.setName(userInfo.getName());
+        userInfoVO.setNickName(userInfo.getNickName());
+        userInfoVO.setHeadImg(userInfo.getHeadImg());
+        userInfoVO.setMobile(userInfo.getMobile());
+        userInfoVO.setUserType(userType);
+        return userInfoVO;
     }
 }

@@ -1,6 +1,8 @@
 package com.arui.srb.core.service;
 
 import com.arui.srb.core.pojo.entity.UserInfo;
+import com.arui.srb.core.pojo.vo.LoginVO;
+import com.arui.srb.core.pojo.vo.RegisterVO;
 import com.arui.srb.core.pojo.vo.UserInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,7 +18,15 @@ public interface UserInfoService extends IService<UserInfo> {
 
     /**
      * 用户注册
-     * @param userInfoVO 用户的注册信息表单
+     * @param registerVO 用户的注册信息表单
      */
-    void register(UserInfoVO userInfoVO);
+    void register(RegisterVO registerVO);
+
+    /**
+     * 用户登录
+     * @param loginVO
+     * @param ip
+     * @return
+     */
+    UserInfoVO login(LoginVO loginVO, String ip);
 }

@@ -70,7 +70,7 @@ public class SmsServiceImpl implements SmsService {
             // redisTemplate.opsForValue().set("srb:sms:code:" + mobile, fourBitRandom, 5, TimeUnit.MINUTES);
 
             // redis验证码永久有效，方便测试
-            redisTemplate.opsForValue().set("srb:sms:code:" + mobile, fourBitRandom, 5, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set("srb:sms:code:" + mobile, fourBitRandom);
 
         } catch (ClientException e) {
             throw new BusinessException(ResponseEnum.ALIYUN_SMS_ERROR);

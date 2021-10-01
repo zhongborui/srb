@@ -2,19 +2,20 @@ package com.arui.srb.core.controller.api;
 
 
 import com.arui.common.exception.Assert;
-import com.arui.common.exception.BusinessException;
 import com.arui.common.result.R;
 import com.arui.common.result.ResponseEnum;
 import com.arui.common.util.RegexValidateUtils;
+import com.arui.srb.core.pojo.vo.LoginVO;
+import com.arui.srb.core.pojo.vo.RegisterVO;
 import com.arui.srb.core.pojo.vo.UserInfoVO;
 import com.arui.srb.core.service.UserInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -37,11 +38,11 @@ public class ApiUserInfoController {
     @PostMapping("/register")
     public R register(
             @ApiParam(value = "用户注册信息", required = true)
-            @RequestBody UserInfoVO userInfoVO){
+            @RequestBody RegisterVO registerVO){
         // 一系列的校验
-        String mobile = userInfoVO.getMobile();
-        String password = userInfoVO.getPassword();
-        String registerCode = userInfoVO.getRegisterCode();
+        String mobile = registerVO.getMobile();
+        String password = registerVO.getPassword();
+        String registerCode = registerVO.getCode();
 
         // MOBILE_NULL_ERROR(-202, "手机号码不能为空"),
         Assert.notNull(mobile, ResponseEnum.MOBILE_NULL_ERROR);
@@ -52,8 +53,29 @@ public class ApiUserInfoController {
 //        CODE_NULL_ERROR(205, "验证码不能为空"),
         Assert.notNull(registerCode, ResponseEnum.CODE_NULL_ERROR);
 
-        userInfoService.register(userInfoVO);
+        userInfoService.register(registerVO);
         return R.ok();
+    }
+
+    @ApiOperation(value = "前台用户登录接口")
+    @PostMapping("/login")
+    public R login(
+            @ApiParam(value = "用户登录对象VO")
+            @RequestBody LoginVO loginVO,
+            HttpServletRequest request){
+
+        // 一系列判断
+        String mobile = loginVO.getMobile();
+        String password = loginVO.getPassword();
+        Assert.notEmpty(mobile, ResponseEnum.MOBILE_NULL_ERROR);
+        Assert.notEmpty(password, ResponseEnum.PASSWORD_NULL_ERROR);
+
+        // 获取用户ip
+//        String ip = request.getRemoteAddr();
+        // nginx 转发ip
+        String ip = request.getHeader("X-Forwarded-For");
+        UserInfoVO userInfoVO = userInfoService.login(loginVO, ip);
+        return R.ok().data("userInfo", userInfoVO);
     }
 }
 
