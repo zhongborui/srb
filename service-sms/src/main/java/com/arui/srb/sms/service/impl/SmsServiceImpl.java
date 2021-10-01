@@ -66,7 +66,10 @@ public class SmsServiceImpl implements SmsService {
             boolean success = response.getHttpResponse().isSuccess();
             Assert.isTrue(success, ResponseEnum.ALIYUN_SMS_ERROR);
 
-            // 调用redis存验证码
+            // 调用redis存验证码 5分钟有效期
+            // redisTemplate.opsForValue().set("srb:sms:code:" + mobile, fourBitRandom, 5, TimeUnit.MINUTES);
+
+            // redis验证码永久有效，方便测试
             redisTemplate.opsForValue().set("srb:sms:code:" + mobile, fourBitRandom, 5, TimeUnit.MINUTES);
 
         } catch (ClientException e) {

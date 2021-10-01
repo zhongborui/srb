@@ -17,15 +17,21 @@ import java.util.List;
  * @author arui
  * @since 2021-09-22
  */
-@RestController
-@RequestMapping("/api/core/integralGrade")
-public class IntegralGradeController {
-    @Resource
-    private IntegralGradeService integralGradeService;
 
-    @GetMapping("/list")
-    public List<IntegralGrade> list(){
-        return integralGradeService.list();
-    }
+@RestController
+@RequestMapping("/integralGrade")
+public class IntegralGradeController {
 }
+
+//@RestController
+//@RequestMapping("/api/core/integralGrade")
+//public class IntegralGradeController {
+//    @Resource
+//    private IntegralGradeService integralGradeService;
+//
+//    @GetMapping("/list")
+//    public List<IntegralGrade> list(){
+//        return integralGradeService.list();
+//    }
+//}
 
