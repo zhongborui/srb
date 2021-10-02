@@ -5,6 +5,7 @@ import com.arui.common.exception.Assert;
 import com.arui.common.result.R;
 import com.arui.common.result.ResponseEnum;
 import com.arui.common.util.RegexValidateUtils;
+import com.arui.srb.base.util.JwtUtils;
 import com.arui.srb.core.pojo.vo.LoginVO;
 import com.arui.srb.core.pojo.vo.RegisterVO;
 import com.arui.srb.core.pojo.vo.UserInfoVO;
@@ -76,6 +77,17 @@ public class ApiUserInfoController {
         String ip = request.getHeader("X-Forwarded-For");
         UserInfoVO userInfoVO = userInfoService.login(loginVO, ip);
         return R.ok().data("userInfo", userInfoVO);
+    }
+
+    @ApiOperation(value = "校验令牌接口")
+    @GetMapping("/checkToken")
+    public R checkToken(HttpServletRequest request){
+        String token = request.getHeader("token");
+        boolean result = JwtUtils.checkToken(token);
+        if (!result){
+            return R.setResult(ResponseEnum.LOGIN_AUTH_ERROR);
+        }
+        return R.ok();
     }
 }
 
