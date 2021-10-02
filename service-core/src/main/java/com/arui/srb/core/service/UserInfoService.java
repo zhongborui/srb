@@ -1,10 +1,15 @@
 package com.arui.srb.core.service;
 
 import com.arui.srb.core.pojo.entity.UserInfo;
+import com.arui.srb.core.pojo.query.UserInfoQuery;
 import com.arui.srb.core.pojo.vo.LoginVO;
 import com.arui.srb.core.pojo.vo.RegisterVO;
 import com.arui.srb.core.pojo.vo.UserInfoVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -29,4 +34,12 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return
      */
     UserInfoVO login(LoginVO loginVO, String ip);
+
+    /**
+     * 分页查询会员列表
+     * @param userInfoPage 分页对象
+     * @param userInfoQuery 查询条件
+     * @return
+     */
+    Page<UserInfo> listPage(Page<UserInfo> userInfoPage, UserInfoQuery userInfoQuery);
 }

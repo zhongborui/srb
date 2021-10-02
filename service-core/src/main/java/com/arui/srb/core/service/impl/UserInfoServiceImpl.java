@@ -8,11 +8,14 @@ import com.arui.srb.core.mapper.UserLoginRecordMapper;
 import com.arui.srb.core.pojo.entity.UserInfo;
 import com.arui.srb.core.mapper.UserInfoMapper;
 import com.arui.srb.core.pojo.entity.UserLoginRecord;
+import com.arui.srb.core.pojo.query.UserInfoQuery;
 import com.arui.srb.core.pojo.vo.LoginVO;
 import com.arui.srb.core.pojo.vo.RegisterVO;
 import com.arui.srb.core.pojo.vo.UserInfoVO;
 import com.arui.srb.core.service.UserInfoService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -110,4 +114,31 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         userInfoVO.setUserType(userType);
         return userInfoVO;
     }
+
+    @Override
+    public Page<UserInfo> listPage(Page<UserInfo> userInfoPage, UserInfoQuery userInfoQuery) {
+        QueryWrapper<UserInfo> userInfoQueryWrapper = new QueryWrapper<>();
+        String mobile = userInfoQuery.getMobile();
+        Integer userType = userInfoQuery.getUserType();
+        Integer status = userInfoQuery.getStatus();
+
+        userInfoQueryWrapper
+                .eq(StringUtils.isNotBlank(mobile),"mobile", mobile)
+                .eq(userType != null, "user_type", userType)
+                .eq(status != null, "status", status);
+        Page<UserInfo> userListPage = userInfoMapper.selectPage(userInfoPage, userInfoQueryWrapper);
+//        Page<UserInfo> userListPage = baseMapper.selectPage(userInfoPage, userInfoQueryWrapper);
+        return userListPage;
+    }
+
+//    @Override
+//    public List<UserInfo> listByUserInfoQuery(UserInfoQuery userInfoQuery) {
+//        QueryWrapper<UserInfo> userInfoQueryQueryWrapper = new QueryWrapper<>();
+//        userInfoQueryQueryWrapper.eq("mobile", userInfoQuery.getMobile())
+//                .eq("user_type", userInfoQuery.getUserType())
+//                .eq("status", userInfoQuery.getStatus());
+//
+//        List<UserInfo> userInfoList = userInfoMapper.selectList(userInfoQueryQueryWrapper);
+//        return userInfoList;
+//    }
 }

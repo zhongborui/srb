@@ -27,7 +27,7 @@ import java.util.List;
  * @since 2021-09-22
  */
 @Slf4j
-@Api(tags = "后台积分管理")
+@Api(tags = "后台积分等级管理接口")
 @CrossOrigin
 @RestController
 @RequestMapping("/admin/core/integralGrade")

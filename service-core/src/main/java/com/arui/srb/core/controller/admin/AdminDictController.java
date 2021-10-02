@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @RestController
 @CrossOrigin
-@Api(tags = "数据字典管理")
+@Api(tags = "数据字典管理接口")
 @RequestMapping("/admin/core/dict")
 public class AdminDictController {
 
