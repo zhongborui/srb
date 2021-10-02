@@ -51,5 +51,17 @@ public class AdminUserInfoController {
         Page<UserInfo> userInfoList = userInfoService.listPage(userInfoPage, userInfoQuery);
         return R.ok().data("pageModel", userInfoList);
     }
+
+    @ApiOperation(value = "锁定用户接口")
+    @PutMapping("/lock/{id}/{status}")
+    public R lock(
+            @ApiParam(value = "用户id", required = true)
+            @PathVariable Long id,
+            @ApiParam(value = "是否锁定,0锁定、1正常", required = true)
+            @PathVariable Integer status){
+
+        userInfoService.lock(id, status);
+        return R.ok().message((status == 1)? "正常" : "锁定");
+    }
 }
 

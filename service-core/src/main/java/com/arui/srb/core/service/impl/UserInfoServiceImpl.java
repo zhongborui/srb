@@ -131,6 +131,14 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         return userListPage;
     }
 
+    @Override
+    public void lock(Long id, Integer status) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(id);
+        userInfo.setStatus(status);
+        baseMapper.updateById(userInfo);
+    }
+
 //    @Override
 //    public List<UserInfo> listByUserInfoQuery(UserInfoQuery userInfoQuery) {
 //        QueryWrapper<UserInfo> userInfoQueryQueryWrapper = new QueryWrapper<>();

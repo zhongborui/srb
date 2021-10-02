@@ -42,4 +42,11 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return
      */
     Page<UserInfo> listPage(Page<UserInfo> userInfoPage, UserInfoQuery userInfoQuery);
+
+    /**
+     * 锁定用户
+     * @param id
+     * @param status
+     */
+    void lock(Long id, Integer status);
 }
