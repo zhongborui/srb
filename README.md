@@ -6,13 +6,13 @@
 
 - **技术架构****
 
-  ![](gitrep/srb/doc/images/项目架构.png)
+  ![](doc/images/项目架构.png)
 
   
 
 - **业务结构**
 
-![](gitrep/srb/doc/images/业务结构.png)
+![](doc/images/业务结构.png)
 
 # 前端系统
 
@@ -51,7 +51,7 @@ npm run dev
 - 解决前端程序能够同时对接多个后端服务问题
 - 解决方案有nginx反向代理、微服务网关等
 
-![](gitrep/srb/doc/images/nginx反向代理.png)
+![](doc/images/nginx反向代理.png)
 
 - nginx的配置nginx.conf
 
