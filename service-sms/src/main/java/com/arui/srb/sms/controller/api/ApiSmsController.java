@@ -48,4 +48,11 @@ public class ApiSmsController {
 
         return R.ok().message("短信发送成功");
     }
+
+    @ApiOperation(value = "测试sentinel控制台")
+    @GetMapping("/test")
+    public boolean test(){
+        coreUserInfoClient.checkMobile("133");
+        return true;
+    }
 }

@@ -21,6 +21,9 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848 # 注册中心
+#    sentinel:
+#      transport:
+#        dashboard: localhost:8080 # sentinel控制台
 
 aliyun:
   sms:
@@ -40,4 +43,13 @@ jasypt:
 logging:
   level:
     com.arui.srb.sms.client.CoreUserInfoClient: debug
+
+feign:
+  sentinel:
+    enabled: true # feign开启服务熔断
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 100000
+#        readTimeout: 100000
 

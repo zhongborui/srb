@@ -1,5 +1,6 @@
 package com.arui.srb.sms.client;
 
+import com.arui.srb.sms.client.fallback.CoreUserInfoClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 /**
  * @author ...
  */
-@FeignClient(value = "service-core")
+@FeignClient(value = "service-core", fallback = CoreUserInfoClientFallback.class)
 public interface CoreUserInfoClient {
 
     /**
