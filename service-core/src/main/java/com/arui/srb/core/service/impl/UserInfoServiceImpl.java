@@ -144,11 +144,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         QueryWrapper<UserInfo> userInfoServiceQueryWrapper = new QueryWrapper<>();
         userInfoServiceQueryWrapper.eq("mobile", mobile);
         Integer count = baseMapper.selectCount(userInfoServiceQueryWrapper);
-        if (count > 0){
-            // true是手机号已经注册
-            return true;
-        }
-        return false;
+        // true是手机号已经注册
+        return count > 0;
     }
 
 //    @Override

@@ -35,3 +35,9 @@ jasypt:
   encryptor:
     algorithm: PBEWITHMD5ANDDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+# 日志设置
+logging:
+  level:
+    com.arui.srb.sms.client.CoreUserInfoClient: debug
+

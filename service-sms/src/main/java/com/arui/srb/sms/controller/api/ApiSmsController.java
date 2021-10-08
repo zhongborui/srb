@@ -4,6 +4,7 @@ import com.arui.common.exception.Assert;
 import com.arui.common.result.R;
 import com.arui.common.result.ResponseEnum;
 import com.arui.common.util.RegexValidateUtils;
+import com.arui.srb.sms.client.CoreUserInfoClient;
 import com.arui.srb.sms.service.SmsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +26,9 @@ public class ApiSmsController {
     @Resource
     private SmsService smsService;
 
+    @Resource
+    private CoreUserInfoClient coreUserInfoClient;
+
     @ApiOperation("获取验证码")
     @GetMapping("/send/{mobile}")
     public R send(
@@ -35,6 +39,10 @@ public class ApiSmsController {
         Assert.notEmpty(mobile, ResponseEnum.MOBILE_NULL_ERROR);
 
         Assert.isTrue(RegexValidateUtils.checkCellphone(mobile), ResponseEnum.MOBILE_ERROR);
+
+        // 检查手机号是否已经注册
+        boolean b = coreUserInfoClient.checkMobile(mobile);
+        Assert.isTrue(!b, ResponseEnum.MOBILE_EXIST_ERROR);
 
         smsService.send(mobile);
 

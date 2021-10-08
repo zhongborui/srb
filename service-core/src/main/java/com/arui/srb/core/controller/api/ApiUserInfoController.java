@@ -95,8 +95,7 @@ public class ApiUserInfoController {
     public boolean checkMobile(
             @ApiParam(value = "手机号", required = true)
             @PathVariable String mobile){
-        boolean b = userInfoService.checkMobile(mobile);
-        return b;
+        return userInfoService.checkMobile(mobile);
     }
 }
 
