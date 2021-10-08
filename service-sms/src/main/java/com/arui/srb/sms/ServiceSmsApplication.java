@@ -4,6 +4,7 @@ import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 //@EnableEncryptableProperties
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @ComponentScan({"com.arui.srb", "com.arui.common"})
+@EnableDiscoveryClient
 public class ServiceSmsApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServiceSmsApplication.class, args);

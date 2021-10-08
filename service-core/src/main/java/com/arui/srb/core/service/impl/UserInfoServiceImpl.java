@@ -139,6 +139,18 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         baseMapper.updateById(userInfo);
     }
 
+    @Override
+    public boolean checkMobile(String mobile) {
+        QueryWrapper<UserInfo> userInfoServiceQueryWrapper = new QueryWrapper<>();
+        userInfoServiceQueryWrapper.eq("mobile", mobile);
+        Integer count = baseMapper.selectCount(userInfoServiceQueryWrapper);
+        if (count > 0){
+            // true是手机号已经注册
+            return true;
+        }
+        return false;
+    }
+
 //    @Override
 //    public List<UserInfo> listByUserInfoQuery(UserInfoQuery userInfoQuery) {
 //        QueryWrapper<UserInfo> userInfoQueryQueryWrapper = new QueryWrapper<>();

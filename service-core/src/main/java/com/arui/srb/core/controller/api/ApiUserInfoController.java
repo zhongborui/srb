@@ -89,5 +89,14 @@ public class ApiUserInfoController {
         }
         return R.ok();
     }
+
+    @ApiOperation(value = "检查手机号是否注册")
+    @GetMapping("/checkMobile/{mobile}")
+    public boolean checkMobile(
+            @ApiParam(value = "手机号", required = true)
+            @PathVariable String mobile){
+        boolean b = userInfoService.checkMobile(mobile);
+        return b;
+    }
 }
 
