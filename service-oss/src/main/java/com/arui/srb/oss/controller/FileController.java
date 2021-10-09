@@ -17,7 +17,7 @@ import java.io.InputStream;
 /**
  * @author ...
  */
-@CrossOrigin
+
 @RestController
 @RequestMapping("/api/oss/file")
 @Api(tags = "oss文件系统")

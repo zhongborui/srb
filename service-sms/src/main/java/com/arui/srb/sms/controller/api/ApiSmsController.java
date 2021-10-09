@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 @RestController
 @Api(tags = "验证码短信接口")
 @RequestMapping("/api/sms")
-@CrossOrigin
+
 @Slf4j
 public class ApiSmsController {
     @Resource

@@ -25,7 +25,7 @@ import java.util.List;
  * @since 2021-09-22
  */
 @Api(tags = "后台会员管理接口")
-@CrossOrigin
+
 @RestController
 @RequestMapping("/admin/core/userInfo")
 public class AdminUserInfoController {

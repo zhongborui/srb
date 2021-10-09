@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Api(tags = "前台会员接口")
 @RestController
-@CrossOrigin
+
 @RequestMapping("/api/core/userInfo")
 public class ApiUserInfoController {
 
