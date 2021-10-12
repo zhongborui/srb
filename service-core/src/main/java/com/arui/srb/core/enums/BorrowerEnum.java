@@ -1,5 +1,6 @@
 package com.arui.srb.core.enums;
 
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,4 +19,14 @@ public enum BorrowerEnum {
 
     private Integer status;
     private String message;
+
+    public static String getMessageByStatus(Integer status){
+        BorrowerEnum[] objs = BorrowerEnum.values();
+        for (BorrowerEnum obj : objs) {
+            if (obj.getStatus().equals(status)){
+                return obj.getMessage();
+            }
+        }
+        return "";
+    }
 }

@@ -124,6 +124,17 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         return dictList;
     }
 
+    @Override
+    public String getNameByDictCodeAndValue(String dictCode, Integer value) {
+        List<Dict> dictList = this.findByDictCode(dictCode);
+        for (Dict dict : dictList) {
+            if (dict.getValue().equals(value)){
+                return dict.getName();
+            }
+        }
+        return null;
+    }
+
     /**
      * 判断该节点是否有子节点
      */
