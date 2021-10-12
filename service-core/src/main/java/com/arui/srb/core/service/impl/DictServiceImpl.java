@@ -40,6 +40,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     @Resource
     private RedisTemplate redisTemplate;
 
+
     /**
      * mybatis-plus中 baseMapper 多态实际执行还是DictMapper
      * @param inputStream 文件导入输入流
@@ -104,6 +105,22 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
             log.error("redis服务器异常：" + ExceptionUtils.getStackTrace(e));
         }
 
+        return dictList;
+    }
+
+    @Override
+    public List<Dict> findByDictCode(String dictCode) {
+
+        // 获取dictCode的对应id，及子类的parent_id
+        QueryWrapper<Dict> dictQueryWrapper = new QueryWrapper<>();
+        dictQueryWrapper.select("id").eq("dict_code", dictCode);
+        Dict dict = baseMapper.selectOne(dictQueryWrapper);
+        Long id = dict.getId();
+
+        // 查询所有子类
+        QueryWrapper<Dict> dictQueryWrapper1 = new QueryWrapper<>();
+        dictQueryWrapper1.select("name", "value").eq("parent_id", id);
+        List<Dict> dictList = baseMapper.selectList(dictQueryWrapper1);
         return dictList;
     }
 
