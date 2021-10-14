@@ -16,6 +16,7 @@ import com.arui.srb.core.pojo.vo.BorrowerDetailVO;
 import com.arui.srb.core.service.BorrowInfoService;
 import com.arui.srb.core.service.BorrowerService;
 import com.arui.srb.core.service.DictService;
+import com.arui.srb.core.service.LendService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
@@ -53,6 +54,9 @@ public class BorrowInfoServiceImpl extends ServiceImpl<BorrowInfoMapper, BorrowI
 
     @Resource
     private BorrowerService borrowerService;
+
+    @Resource
+    private LendService lendService;
 
     /**
      * 获得借款金额
@@ -148,6 +152,10 @@ public class BorrowInfoServiceImpl extends ServiceImpl<BorrowInfoMapper, BorrowI
         borrowInfo.setStatus(BorrowInfoStatusEnum.CHECK_OK.getStatus());
         baseMapper.updateById(borrowInfo);
 
-        // todo 生成标的
+        //审核通过则创建标的
+        if (borrowInfoApprovalVO.getStatus().intValue() == BorrowInfoStatusEnum.CHECK_OK.getStatus().intValue()) {
+            //创建标的
+            lendService.createLend(borrowInfoApprovalVO, borrowInfo);
+        }
     }
 }

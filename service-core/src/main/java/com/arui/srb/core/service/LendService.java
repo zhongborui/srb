@@ -1,7 +1,13 @@
 package com.arui.srb.core.service;
 
+import com.arui.srb.core.pojo.entity.BorrowInfo;
 import com.arui.srb.core.pojo.entity.Lend;
+import com.arui.srb.core.pojo.vo.BorrowInfoApprovalVO;
+import com.arui.srb.core.pojo.vo.LendVO;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +19,23 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface LendService extends IService<Lend> {
 
+    /**
+     * 返回列表
+     * @return
+     */
+    List<LendVO> getLendList();
+
+    /**
+     * 生成标的
+     * @param borrowInfoApprovalVO
+     * @param borrowInfo
+     */
+    void createLend(BorrowInfoApprovalVO borrowInfoApprovalVO, BorrowInfo borrowInfo);
+
+    /**
+     * 查看标的的详情信息
+     * @param id
+     * @return
+     */
+    Map<String, Object> getLendDetail(Long id);
 }

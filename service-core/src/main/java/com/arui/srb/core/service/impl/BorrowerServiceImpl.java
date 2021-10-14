@@ -114,12 +114,14 @@ public class BorrowerServiceImpl extends ServiceImpl<BorrowerMapper, Borrower> i
         String education = dictService.getNameByDictCodeAndValue("education", borrower.getEducation());
         String industry = dictService.getNameByDictCodeAndValue("industry", borrower.getIndustry());
         String returnSource = dictService.getNameByDictCodeAndValue("returnSource", borrower.getReturnSource());
+        String income = dictService.getNameByDictCodeAndValue("income", borrower.getIncome());
         String relation = dictService.getNameByDictCodeAndValue("relation", borrower.getContactsRelation());
 
         borrowerDetailVO.setEducation(education);
         borrowerDetailVO.setIndustry(industry);
         borrowerDetailVO.setReturnSource(returnSource);
         borrowerDetailVO.setContactsRelation(relation);
+        borrowerDetailVO.setIncome(income);
 
         // 查询borrowerAttach表信息
         QueryWrapper<BorrowerAttach> borrowerAttachQueryWrapper = new QueryWrapper<>();
