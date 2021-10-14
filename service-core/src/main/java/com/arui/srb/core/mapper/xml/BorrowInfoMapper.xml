@@ -2,4 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.arui.srb.core.mapper.BorrowInfoMapper">
 
+    <select id="getUserInfoList" resultType="com.arui.srb.core.pojo.vo.BorrowInfoVO">
+        select bi.*, b.name, b.mobile
+        from borrow_info bi
+        join borrower b
+        using(user_id)
+        where bi.is_deleted = 0
+    </select>
+
+    <select id="getUserInfoById" resultType="com.arui.srb.core.pojo.vo.BorrowInfoVO">
+        select bi.*, b.name, b.mobile
+        from borrow_info bi
+        join borrower b
+        using(user_id)
+        where bi.is_deleted = 0 and bi.id = #{id}
+    </select>
 </mapper>

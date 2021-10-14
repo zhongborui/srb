@@ -1,9 +1,13 @@
 package com.arui.srb.core.service;
 
 import com.arui.srb.core.pojo.entity.BorrowInfo;
+import com.arui.srb.core.pojo.vo.BorrowInfoApprovalVO;
+import com.arui.srb.core.pojo.vo.BorrowInfoVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -34,4 +38,23 @@ public interface BorrowInfoService extends IService<BorrowInfo> {
      * @return
      */
     Integer getBorrowInfoStatus(Long userId);
+
+    /**
+     * 获得借款人列表
+     * @return
+     */
+    List<BorrowInfoVO> getUserInfoList();
+
+    /**
+     * 根据id查询借款人借款信息
+     * @param id
+     * @return
+     */
+    Map<String, Object> show(Long id);
+
+    /**
+     * 审核借款申请
+     * @param borrowInfoApprovalVO
+     */
+    void approval(BorrowInfoApprovalVO borrowInfoApprovalVO);
 }
