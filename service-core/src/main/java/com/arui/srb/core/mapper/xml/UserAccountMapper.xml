@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.arui.srb.core.mapper.UserAccountMapper">
 
+    <update id="updateAmount">
+        update user_account
+        set freeze_amount = freeze_amount + #{freezeAmount},
+        amount = amount + #{chargeAmt}
+        where id = (select id from user_bind where bind_code = #{bindCode})
+    </update>
 </mapper>

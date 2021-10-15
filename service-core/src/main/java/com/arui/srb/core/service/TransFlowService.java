@@ -1,5 +1,6 @@
 package com.arui.srb.core.service;
 
+import com.arui.srb.core.pojo.bo.TransFlowBO;
 import com.arui.srb.core.pojo.entity.TransFlow;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TransFlowService extends IService<TransFlow> {
 
+    /**
+     * 充值流水
+     * @param transFlowBO
+     */
+    void saveTransFlow(TransFlowBO transFlowBO);
 }
