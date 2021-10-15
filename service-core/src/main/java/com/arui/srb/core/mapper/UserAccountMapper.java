@@ -22,4 +22,5 @@ public interface UserAccountMapper extends BaseMapper<UserAccount> {
      * @param freezeAmount
      */
     void updateAmount(String bindCode, BigDecimal chargeAmt, BigDecimal freezeAmount);
+
 }

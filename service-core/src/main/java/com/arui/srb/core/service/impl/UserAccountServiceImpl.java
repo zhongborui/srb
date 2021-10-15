@@ -73,4 +73,10 @@ public class UserAccountServiceImpl extends ServiceImpl<UserAccountMapper, UserA
                 "充值");
         transFlowService.saveTransFlow(transFlowBO);
     }
+
+    @Override
+    public BigDecimal getAccount(Long userId) {
+        UserAccount userAccount = baseMapper.selectById(userId);
+        return new BigDecimal(userAccount.getAmount()+"");
+    }
 }

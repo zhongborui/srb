@@ -1,6 +1,7 @@
 package com.arui.srb.core.service.impl;
 
 import com.arui.srb.core.enums.LendStatusEnum;
+import com.arui.srb.core.enums.ReturnMethodEnum;
 import com.arui.srb.core.pojo.entity.BorrowInfo;
 import com.arui.srb.core.pojo.entity.Borrower;
 import com.arui.srb.core.pojo.entity.Lend;
@@ -10,7 +11,7 @@ import com.arui.srb.core.pojo.vo.LendVO;
 import com.arui.srb.core.service.BorrowerService;
 import com.arui.srb.core.service.DictService;
 import com.arui.srb.core.service.LendService;
-import com.arui.srb.core.utils.LendNoUtils;
+import com.arui.srb.core.utils.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.poi.hssf.record.pivottable.StreamIDRecord;
@@ -119,5 +120,22 @@ public class LendServiceImpl extends ServiceImpl<LendMapper, Lend> implements Le
         map1.put("lend", lendVO);
         map1.put("borrower", borrowerService.showBorrowDetailByUserId(id));
         return map1;
+    }
+
+    @Override
+    public BigDecimal getInterestCount(BigDecimal invest, BigDecimal yearRate, Integer totalmonth, Integer returnMethod) {
+
+        BigDecimal interestCount;
+        //计算总利息
+        if (returnMethod.intValue() == ReturnMethodEnum.ONE.getStatus()) {
+            interestCount = Amount1Helper.getInterestCount(invest, yearRate, totalmonth);
+        } else if (returnMethod.intValue() == ReturnMethodEnum.TOW.getStatus()) {
+            interestCount = Amount2Helper.getInterestCount(invest, yearRate, totalmonth);
+        } else if(returnMethod.intValue() == ReturnMethodEnum.THREE.getStatus()) {
+            interestCount = Amount3Helper.getInterestCount(invest, yearRate, totalmonth);
+        } else {
+            interestCount = Amount4Helper.getInterestCount(invest, yearRate, totalmonth);
+        }
+        return interestCount;
     }
 }

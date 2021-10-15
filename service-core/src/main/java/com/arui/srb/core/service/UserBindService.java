@@ -37,4 +37,11 @@ public interface UserBindService extends IService<UserBind> {
      * @return
      */
     boolean isBind(Map<String, Object> paramMap);
+
+    /**
+     * 绑定协议号
+     * @param investUserId
+     * @return
+     */
+    String getBindCodeByUserId(Long investUserId);
 }
