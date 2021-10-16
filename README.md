@@ -10,9 +10,6 @@
 
   
 
-- **业务结构**
-
-![](doc/images/业务结构.png)
 
 # 前端系统
 
@@ -45,36 +42,6 @@ npm run dev
   4. 定义页面组件脚本 ```<script>```（调用api模块方法，获得后端数据渲染到模板）
 
      
-
-# nginx反向代理
-
-- 解决前端程序能够同时对接多个后端服务问题
-- 解决方案有nginx反向代理、微服务网关等
-
-![](doc/images/nginx反向代理.png)
-
-- nginx的配置nginx.conf
-
-  ```bash
-  server {
-      listen       80;
-      server_name  localhost;
-      location ~ /core/ {           
-          proxy_pass http://localhost:8110;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      }
-      location ~ /sms/ {           
-          proxy_pass http://localhost:8120;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      }
-      location ~ /oss/ {           
-              proxy_pass http://localhost:8130;
-              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      }
-  }
-  ```
-
-  
 
 # 后端系统
 
@@ -109,7 +76,6 @@ srb
 | alibaba-easyexcel                 | Excel表单的读写        | https://github.com/alibaba/easyexcel            |
 | JWT                               | JWT单点登陆            | https://github.com/jwtk/jjwt                    |
 | Spring Data Redis                 | 缓冲层框架             | https://spring.io/projects/spring-data-redis    |
-| Spring Task                       | 定时任务               |                                                 |
 
 
 
