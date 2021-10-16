@@ -56,4 +56,11 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return
      */
     boolean checkMobile(String mobile);
+
+    /**
+     * 获取手机号
+     * @param bindCode
+     * @return
+     */
+    String getMobileByBindCode(String bindCode);
 }

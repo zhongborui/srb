@@ -25,6 +25,13 @@ spring:
 #      transport:
 #        dashboard: localhost:8080 # sentinel控制台
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtual-host: /srbhost
+    username: guest
+    password: guest
+
 aliyun:
   sms:
     regionId: ENC(gNEJ3EzUSrcjQn4b2wxevYR1pyJcJrsJ)

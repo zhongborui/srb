@@ -27,6 +27,13 @@ spring:
       discovery:
         server-addr: localhost:8848 # 注册中心
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtual-host: /srbhost
+    username: guest
+    password: guest
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 日志

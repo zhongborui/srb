@@ -6,12 +6,16 @@ import com.arui.srb.core.hfb.HfbConst;
 import com.arui.srb.core.hfb.RequestHelper;
 import com.arui.srb.core.mapper.UserBindMapper;
 import com.arui.srb.core.pojo.bo.TransFlowBO;
+import com.arui.srb.core.pojo.dto.SmsDTO;
 import com.arui.srb.core.pojo.entity.UserAccount;
 import com.arui.srb.core.mapper.UserAccountMapper;
 import com.arui.srb.core.pojo.entity.UserBind;
 import com.arui.srb.core.service.TransFlowService;
 import com.arui.srb.core.service.UserAccountService;
+import com.arui.srb.core.service.UserInfoService;
 import com.arui.srb.core.utils.LendNoUtils;
+import com.arui.srb.rabbitutil.constant.MQConst;
+import com.arui.srb.rabbitutil.service.MQService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +40,12 @@ public class UserAccountServiceImpl extends ServiceImpl<UserAccountMapper, UserA
 
     @Resource
     private TransFlowService transFlowService;
+
+    @Resource
+    private MQService mqService;
+
+    @Resource
+    private UserInfoService userInfoService;
 
     @Override
     public String charge(BigDecimal chargeAmt, Long userId) {
@@ -72,6 +82,12 @@ public class UserAccountServiceImpl extends ServiceImpl<UserAccountMapper, UserA
                 TransTypeEnum.RECHARGE,
                 "充值");
         transFlowService.saveTransFlow(transFlowBO);
+
+        String mobile = userInfoService.getMobileByBindCode(bindCode);
+        SmsDTO smsDTO = new SmsDTO();
+        smsDTO.setMobile(mobile);
+        smsDTO.setMessage("充值成功");
+        mqService.sendMessage(MQConst.EXCHANGE_TOPIC_SMS, MQConst.ROUTING_SMS_ITEM, smsDTO);
     }
 
     @Override
